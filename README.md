@@ -22,7 +22,7 @@ _**Note**: This action is supported on all operating systems (`ubuntu`, `macos`,
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: hasithaa/ballerina-setup@v1
+      - uses: hasithaa/setup-ballerina@v1
         name: Install Ballerina
         with:
           version: 2201.1.1
@@ -36,7 +36,7 @@ _**Note**: This action is supported on all operating systems (`ubuntu`, `macos`,
     runs-on: macos-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: hasithaa/ballerina-setup@v1
+      - uses: hasithaa/setup-ballerina@v1
         name: Install Ballerina
         with:
           version: 2201.1.1
@@ -50,7 +50,7 @@ _**Note**: This action is supported on all operating systems (`ubuntu`, `macos`,
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: hasithaa/ballerina-setup@v1
+      - uses: hasithaa/setup-ballerina@v1
         name: Install Ballerina
         with:
           version: 2201.1.1
