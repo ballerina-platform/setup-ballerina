@@ -1,16 +1,41 @@
-name: Test the github action
+name: Test Action
 on:
   workflow_dispatch:
-
+  push:
+    branches:
+      - main
 jobs:
-  test:
-    name: Test the action by running itself
-    strategy:
-      matrix:
-        os: [ ubuntu-latest, windows-latest, macos-latest ]
-    runs-on: ${{ matrix.os }}
+  test_linux:
+    name: Test action on linux
+    runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-
       - uses: ./
-        name: Run this very own action.
+        name: Test the action.
+        with:
+          version: 2201.1.1
+      - run: bal version
+      - run: bal run hello.bal
+  test_windows:
+    name: Test action on Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        name: Test the action.
+        with:
+          version: 2201.1.1
+      - run: bal version
+      - run: bal run hello.bal
+  test_macos:
+    name: Test action on MacOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ./
+        name: Test the action.
+        with:
+          version: 2201.1.1
+      - run: bal version
+      - run: bal run hello.bal
+
