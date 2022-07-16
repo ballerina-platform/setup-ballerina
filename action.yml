@@ -1,0 +1,7 @@
+name: 'Multi-platform hello-world'
+description: 'A multi-platform capable composite action''s hello world.'
+runs:
+  using: "composite"
+  steps:
+    - run: ${GITHUB_ACTION_PATH}/hello.sh
+      shell: bash

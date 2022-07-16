@@ -1,0 +1,16 @@
+name: Test the github action
+on:
+  workflow_dispatch:
+
+jobs:
+  test:
+    name: Test the action by running itself
+    strategy:
+      matrix:
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v2
+
+      - uses: ./
+        name: Run this very own action.
