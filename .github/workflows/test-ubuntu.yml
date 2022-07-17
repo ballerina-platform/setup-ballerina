@@ -1,0 +1,17 @@
+name: Test Ubuntu
+on:
+  push:
+    branches:
+      - main
+jobs:
+  test_linux:
+    name: Test action on Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hasithaa/setup-ballerina@main
+        name: Test the action.
+        with:
+          version: 2201.1.1
+      - run: bal version
+      - run: bal run hello.bal

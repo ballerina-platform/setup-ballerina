@@ -1,6 +1,8 @@
-[![Test Action](https://github.com/hasithaa/ballerina-setup/actions/workflows/selftest.yml/badge.svg?branch=main)](https://github.com/hasithaa/ballerina-setup/actions/workflows/selftest.yml)
-[![GitHub license](https://img.shields.io/github/license/hasithaa/ballerina-setup)](https://github.com/hasithaa/ballerina-setup/blob/main/LICENSE)
-[![GitHub issues](https://img.shields.io/github/issues/hasithaa/ballerina-setup)](https://github.com/hasithaa/ballerina-setup/issues)
+[![Test Ubuntu](https://github.com/hasithaa/setup-ballerina/actions/workflows/test-ubuntu.yml/badge.svg?branch=main)](https://github.com/hasithaa/setup-ballerina/actions/workflows/test-ubuntu.yml)
+[![Test Windows](https://github.com/hasithaa/setup-ballerina/actions/workflows/test-windows.yml/badge.svg?branch=main)](https://github.com/hasithaa/setup-ballerina/actions/workflows/test-windows.yml)
+[![Test Action](https://github.com/hasithaa/setup-ballerina/actions/workflows/test-macos.yml/badge.svg?branch=main)](https://github.com/hasithaa/setup-ballerina/actions/workflows/test-macos.yml)
+[![GitHub license](https://img.shields.io/github/license/hasithaa/setup-ballerina)](https://github.com/hasithaa/setup-ballerina/blob/main/LICENSE)
+[![GitHub issues](https://img.shields.io/github/issues/hasithaa/setup-ballerina)](https://github.com/hasithaa/setup-ballerina/issues)
 
 # Setup Ballerina
 
@@ -30,6 +32,9 @@ _**Note**: This action is supported on all operating systems (`ubuntu`, `macos`,
       - run: bal run hello.bal
 ```
 
+[![Test Ubuntu](https://github.com/hasithaa/setup-ballerina/actions/workflows/test-ubuntu.yml/badge.svg?branch=main)](https://github.com/hasithaa/setup-ballerina/actions/workflows/test-ubuntu.yml)
+[![Source](https://img.shields.io/badge/-Source-blue)](https://github.com/hasithaa/setup-ballerina/blob/main/.github/workflows/test-ubuntu.yml)
+
 ### MacOs
 
 ```yaml
@@ -44,6 +49,9 @@ _**Note**: This action is supported on all operating systems (`ubuntu`, `macos`,
       - run: bal run hello.bal
 ```
 
+[![Test Action](https://github.com/hasithaa/setup-ballerina/actions/workflows/test-macos.yml/badge.svg?branch=main)](https://github.com/hasithaa/setup-ballerina/actions/workflows/test-macos.yml)
+[![Source](https://img.shields.io/badge/-Source-blue)](https://github.com/hasithaa/setup-ballerina/blob/main/.github/workflows/test-macos.yml)
+
 ### Windows
 
 ```yaml
@@ -57,6 +65,9 @@ _**Note**: This action is supported on all operating systems (`ubuntu`, `macos`,
       - run: bal version
       - run: bal run hello.bal
 ```
+
+[![Test Windows](https://github.com/hasithaa/setup-ballerina/actions/workflows/test-windows.yml/badge.svg?branch=main)](https://github.com/hasithaa/setup-ballerina/actions/workflows/test-windows.yml)
+[![Source](https://img.shields.io/badge/-Source-blue)](https://github.com/hasithaa/setup-ballerina/blob/main/.github/workflows/test-windows.yml)
 
 ## License
 The scripts and documentation in this project are released under the [Apache License](https://github.com/hasithaa/setup-ballerina/blob/main/LICENSE).

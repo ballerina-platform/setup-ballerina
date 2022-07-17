@@ -19,7 +19,7 @@ runs:
             curl -L -S -s https://dist.ballerina.io/downloads/${{ inputs.version }}/ballerina-${{ inputs.version }}-swan-lake-windows-x64.msi --output ballerina-${{ inputs.version }}-swan-lake-windows-x64.msi
             msiexec //i ballerina-${{ inputs.version }}-swan-lake-windows-x64.msi //qn
             echo "BALLERINA_HOME=C:\\Program Files\\Ballerina\\" >> $GITHUB_ENV
-            powershell ${GITHUB_ACTION_PATH}\updatepath.ps1    
+            powershell ${GITHUB_ACTION_PATH}/updatepath.ps1    
           elif [[ $OSTYPE == 'darwin'* ]]; then
             echo "macos runner detected"
             wget -q https://dist.ballerina.io/downloads/${{ inputs.version }}/ballerina-${{ inputs.version }}-swan-lake-macos-x64.pkg

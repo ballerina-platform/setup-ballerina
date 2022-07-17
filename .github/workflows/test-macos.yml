@@ -1,0 +1,17 @@
+name: Test MacOS
+on:
+  push:
+    branches:
+      - main
+jobs:
+  test_linux:
+    name: Test action on MacOS
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: hasithaa/setup-ballerina@main
+        name: Test the action.
+        with:
+          version: 2201.1.1
+      - run: bal version
+      - run: bal run hello.bal
