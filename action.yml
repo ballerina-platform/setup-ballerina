@@ -11,18 +11,40 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Cache Restore
+      id: cache-dist
+      uses: actions/cache@v3
+      with:
+        path: |
+          ballerina-${{ inputs.version }}-*.*
+        key: ballerina-${{ inputs.version }}-${{ runner.os }}
+ 
     - name: Download Ballerina installer
+      if: steps.cache-dist.outputs.cache-hit != 'true'
       run: |
           set -x
           if [[ $OSTYPE == 'msys'* ]]; then
             echo "windows runner detected"
             curl -L -S -s https://dist.ballerina.io/downloads/${{ inputs.version }}/ballerina-${{ inputs.version }}-swan-lake-windows-x64.msi --output ballerina-${{ inputs.version }}-swan-lake-windows-x64.msi
+          elif [[ $OSTYPE == 'darwin'* ]]; then
+            echo "macos runner detected"
+            wget -q https://dist.ballerina.io/downloads/${{ inputs.version }}/ballerina-${{ inputs.version }}-swan-lake-macos-x64.pkg
+          else
+            echo "ubuntu runner detected"
+            wget -q https://dist.ballerina.io/downloads/${{ inputs.version }}/ballerina-${{ inputs.version }}-swan-lake-linux-x64.deb
+          fi 
+      shell: bash
+
+    - name: Install Ballerina
+      run: |
+          set -x
+          if [[ $OSTYPE == 'msys'* ]]; then
+            echo "windows runner detected"
             msiexec //i ballerina-${{ inputs.version }}-swan-lake-windows-x64.msi //qn
             echo "BALLERINA_HOME=C:\\Program Files\\Ballerina\\" >> $GITHUB_ENV
             powershell ${GITHUB_ACTION_PATH}/updatepath.ps1    
           elif [[ $OSTYPE == 'darwin'* ]]; then
             echo "macos runner detected"
-            wget -q https://dist.ballerina.io/downloads/${{ inputs.version }}/ballerina-${{ inputs.version }}-swan-lake-macos-x64.pkg
             sudo installer -pkg ballerina-${{ inputs.version }}-swan-lake-macos-x64.pkg -target /Library
             echo "BALLERINA_HOME=/Library/Ballerina" >> $GITHUB_ENV
             echo "/Library/Ballerina/bin" >> $GITHUB_PATH
@@ -33,7 +55,6 @@ runs:
             else
               sudocmd="sudo"
             fi
-            wget -q https://dist.ballerina.io/downloads/${{ inputs.version }}/ballerina-${{ inputs.version }}-swan-lake-linux-x64.deb
             $sudocmd dpkg -i "ballerina-${{ inputs.version }}-swan-lake-linux-x64.deb"
             echo "BALLERINA_HOME=/usr/lib/ballerina" >> $GITHUB_ENV
             echo "/usr/lib/ballerina/bin" >> $GITHUB_PATH

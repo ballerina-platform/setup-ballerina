@@ -3,15 +3,29 @@ on:
   push:
     branches:
       - main
+  pull_request:
+  workflow_dispatch:
+    inputs:
+      balVersion:
+        default: 2201.1.1
 jobs:
   test_linux:
     name: Test action on MacOS
     runs-on: macos-latest
     steps:
+      - name: Set env
+        run: |-
+          echo "balVersion=$(
+          if [[${{ github.event.inputs.balVersion }}]]; then
+            echo ${{ github.event.inputs.balVersion }}
+          else
+            echo 2201.1.1
+          fi
+          )" >> $GITHUB_ENV
       - uses: actions/checkout@v2
       - uses: hasithaa/setup-ballerina@main
         name: Test the action.
         with:
-          version: 2201.1.1
+          version: ${{ env.balVersion }}
       - run: bal version
       - run: bal run hello.bal
