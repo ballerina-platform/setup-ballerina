@@ -23,7 +23,7 @@ jobs:
           fi
           )" >> $GITHUB_ENV
       - uses: actions/checkout@v2
-      - uses: hasithaa/setup-ballerina@main
+      - uses: ballerina-platform/setup-ballerina@main
         name: Test the action.
         with:
           version: ${{ env.balVersion }}
