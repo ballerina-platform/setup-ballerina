@@ -27,7 +27,7 @@ _**Note**: This action is supported on all operating systems (`ubuntu`, `macos`,
       - uses: ballerina-platform/setup-ballerina@v1
         name: Install Ballerina
         with:
-          version: 2201.1.1
+          version: 2201.3.2
       - run: bal version
       - run: bal run hello.bal
 ```
@@ -44,7 +44,7 @@ _**Note**: This action is supported on all operating systems (`ubuntu`, `macos`,
       - uses: ballerina-platform/setup-ballerina@v1
         name: Install Ballerina
         with:
-          version: 2201.1.1
+          version: 2201.3.2
       - run: bal version
       - run: bal run hello.bal
 ```
@@ -61,7 +61,7 @@ _**Note**: This action is supported on all operating systems (`ubuntu`, `macos`,
       - uses: ballerina-platform/setup-ballerina@v1
         name: Install Ballerina
         with:
-          version: 2201.1.1
+          version: 2201.3.2
       - run: bal version
       - run: bal run hello.bal
 ```

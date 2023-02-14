@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       balVersion:
-        default: 2201.1.1
+        default: 2201.3.2
 jobs:
   test_linux:
     name: Test action on Windows
@@ -19,7 +19,7 @@ jobs:
           if [[${{ github.event.inputs.balVersion }}]]; then
             echo ${{ github.event.inputs.balVersion }}
           else
-            echo 2201.1.1
+            echo 2201.3.2
           fi
           )" >> $GITHUB_ENV
         shell: bash

@@ -59,4 +59,4 @@ runs:
             echo "BALLERINA_HOME=/usr/lib/ballerina" >> $GITHUB_ENV
             echo "/usr/lib/ballerina/bin" >> $GITHUB_PATH
           fi 
-      shell: bash 
+      shell: bash
