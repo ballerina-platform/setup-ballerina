@@ -1,4 +1,4 @@
-name: 'Setup Ballerina'
+name: 'Setup Ballerina Language'
 description: 'Install Ballerina `bal` command'
 branding:
   icon: 'archive'  
