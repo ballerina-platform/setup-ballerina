@@ -21,6 +21,7 @@ runs:
           fi
           echo "::set-output name=version::$BALLERINA_VERSION"
       shell: bash
+
     - name: Cache Restore
       id: cache-dist
       uses: actions/cache@v3
@@ -28,6 +29,7 @@ runs:
         path: |
           ballerina-${{ steps.configure-version.outputs.version }}-*.*
         key: ballerina-${{ steps.configure-version.outputs.version }}-${{ runner.os }}
+
     - name: Download Ballerina installer
       if: steps.cache-dist.outputs.cache-hit != 'true'
       run: |
