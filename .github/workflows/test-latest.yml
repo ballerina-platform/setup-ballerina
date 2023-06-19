@@ -11,7 +11,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ballerina-platform/setup-ballerina@main
+      - uses: ${{ github.actor }}/setup-ballerina@main
         name: Test the action.
         with:
           version: latest
@@ -22,7 +22,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ballerina-platform/setup-ballerina@main
+      - uses: ${{ github.actor }}/setup-ballerina@main
         name: Test the action.
         with:
           version: latest
@@ -33,7 +33,7 @@ jobs:
     runs-on: windows-latest
     steps:
       - uses: actions/checkout@v2
-      - uses: ballerina-platform/setup-ballerina@main
+      - uses: ${{ github.actor }}/setup-ballerina@main
         name: Test the action.
         with:
           version: latest
