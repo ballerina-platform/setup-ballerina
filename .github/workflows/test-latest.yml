@@ -1,0 +1,41 @@
+name: Test latest version
+on:
+  push:
+    branches:
+      - main
+  pull_request:
+  workflow_dispatch:
+jobs:
+  test_linux:
+    name: Test action on Ubuntu
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ballerina-platform/setup-ballerina@main
+        name: Test the action.
+        with:
+          version: latest
+      - run: bal version
+      - run: bal run hello.bal
+  test_macos:
+    name: Test action on MacOS
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ballerina-platform/setup-ballerina@main
+        name: Test the action.
+        with:
+          version: latest
+      - run: bal version
+      - run: bal run hello.bal
+  test_windows:
+    name: Test action on Windows
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ballerina-platform/setup-ballerina@main
+        name: Test the action.
+        with:
+          version: latest
+      - run: bal version
+      - run: bal run hello.bal
