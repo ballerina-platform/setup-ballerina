@@ -7,31 +7,42 @@ inputs:
   version:
     description: "Ballerina Version"
     required: true
-    default: 2201.3.2
+    default: 2201.6.0
 runs:
   using: "composite"
   steps:
+    - name: Configure version
+      id: configure-version
+      run: |
+          if [[ ${{ inputs.version }} == 'latest' ]]; then
+            BALLERINA_VERSION=$(echo $(curl -X GET 'https://api.central.ballerina.io/2.0/update-tool/distributions/latest?version=2201.0.0') | sed -n 's/.*"major":"\([^"]*\)".*/\1/p')
+          else
+            BALLERINA_VERSION=${{ inputs.version }}
+          fi
+          echo "::set-output name=version::$BALLERINA_VERSION"
+      shell: bash
+
     - name: Cache Restore
       id: cache-dist
       uses: actions/cache@v3
       with:
         path: |
-          ballerina-${{ inputs.version }}-*.*
-        key: ballerina-${{ inputs.version }}-${{ runner.os }}
- 
+          ballerina-${{ steps.configure-version.outputs.version }}-*.*
+        key: ballerina-${{ steps.configure-version.outputs.version }}-${{ runner.os }}
+
     - name: Download Ballerina installer
       if: steps.cache-dist.outputs.cache-hit != 'true'
       run: |
           set -x
           if [[ $OSTYPE == 'msys'* ]]; then
             echo "windows runner detected"
-            curl -L -S -s https://dist.ballerina.io/downloads/${{ inputs.version }}/ballerina-${{ inputs.version }}-swan-lake-windows-x64.msi --output ballerina-${{ inputs.version }}-swan-lake-windows-x64.msi
+            curl -L -S -s https://dist.ballerina.io/downloads/${{ steps.configure-version.outputs.version }}/ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-windows-x64.msi --output ballerina-${{ inputs.version }}-swan-lake-windows-x64.msi
           elif [[ $OSTYPE == 'darwin'* ]]; then
             echo "macos runner detected"
-            wget -q https://dist.ballerina.io/downloads/${{ inputs.version }}/ballerina-${{ inputs.version }}-swan-lake-macos-x64.pkg
+            wget -q https://dist.ballerina.io/downloads/${{ steps.configure-version.outputs.version }}/ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-macos-x64.pkg
           else
             echo "ubuntu runner detected"
-            wget -q https://dist.ballerina.io/downloads/${{ inputs.version }}/ballerina-${{ inputs.version }}-swan-lake-linux-x64.deb
+            wget -q https://dist.ballerina.io/downloads/${{ steps.configure-version.outputs.version }}/ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-linux-x64.deb
           fi 
       shell: bash
 
@@ -40,12 +51,12 @@ runs:
           set -x
           if [[ $OSTYPE == 'msys'* ]]; then
             echo "windows runner detected"
-            msiexec //i ballerina-${{ inputs.version }}-swan-lake-windows-x64.msi //qn
+            msiexec //i ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-windows-x64.msi //qn
             echo "BALLERINA_HOME=C:\\Program Files\\Ballerina\\" >> $GITHUB_ENV
             powershell ${GITHUB_ACTION_PATH}/updatepath.ps1    
           elif [[ $OSTYPE == 'darwin'* ]]; then
             echo "macos runner detected"
-            sudo installer -pkg ballerina-${{ inputs.version }}-swan-lake-macos-x64.pkg -target /Library
+            sudo installer -pkg ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-macos-x64.pkg -target /Library
             echo "BALLERINA_HOME=/Library/Ballerina" >> $GITHUB_ENV
             echo "/Library/Ballerina/bin" >> $GITHUB_PATH
           else
@@ -55,7 +66,7 @@ runs:
             else
               sudocmd="sudo"
             fi
-            $sudocmd dpkg -i "ballerina-${{ inputs.version }}-swan-lake-linux-x64.deb"
+            $sudocmd dpkg -i "ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-linux-x64.deb"
             echo "BALLERINA_HOME=/usr/lib/ballerina" >> $GITHUB_ENV
             echo "/usr/lib/ballerina/bin" >> $GITHUB_PATH
           fi 
