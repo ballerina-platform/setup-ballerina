@@ -16,7 +16,7 @@ jobs:
       - name: Set env
         run: |-
           echo "balVersion=$(
-          if [[${{ github.event.inputs.balVersion }}]]; then
+          if [[ -n "${{ github.event.inputs.balVersion }}" ]]; then
             echo ${{ github.event.inputs.balVersion }}
           else
             echo 2201.3.2

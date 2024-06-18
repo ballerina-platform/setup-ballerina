@@ -51,7 +51,7 @@ runs:
           set -x
           if [[ $OSTYPE == 'msys'* ]]; then
             echo "windows runner detected"
-            msiexec //i ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-windows-x64.msi //qn
+            msiexec //i ballerina-${{ inputs.version }}-swan-lake-windows-x64.msi //qn
             echo "BALLERINA_HOME=C:\\Program Files\\Ballerina\\" >> $GITHUB_ENV
             powershell ${GITHUB_ACTION_PATH}/updatepath.ps1    
           elif [[ $OSTYPE == 'darwin'* ]]; then
