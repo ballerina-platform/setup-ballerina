@@ -36,14 +36,50 @@ runs:
           set -x
           if [[ $OSTYPE == 'msys'* ]]; then
             echo "windows runner detected"
-            curl -L -S -s https://dist.ballerina.io/downloads/${{ steps.configure-version.outputs.version }}/ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-windows-x64.msi --output ballerina-${{ inputs.version }}-swan-lake-windows-x64.msi
+            if [[ ${{ inputs.version }} == 'nightly' ]]; then
+              ARTIFACT_NAME="Windows Installer msi"
+              GITHUB_RUN_ID=$(curl -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/ballerina-platform/ballerina-distribution/actions/workflows/$DAILY_BUILD_VERSION.yml/runs?status=success&per_page=1" | jq '.workflow_runs[0].id')
+              DOWNLOAD_URL=$(curl -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/ballerina-platform/ballerina-distribution/actions/runs/$GITHUB_RUN_ID/artifacts" | jq -r --arg name "$ARTIFACT_NAME" '.artifacts[] | select(.name == $name) | .archive_download_url')
+              curl -H "Authorization: token $GITHUB_TOKEN" \
+              -L -o artifact.zip $DOWNLOAD_URL
+              unzip -q artifact.zip
+            else
+              curl -L -S -s https://dist.ballerina.io/downloads/${{ steps.configure-version.outputs.version }}/ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-windows-x64.msi --output ballerina-${{ inputs.version }}-swan-lake-windows-x64.msi
+            fi
           elif [[ $OSTYPE == 'darwin'* ]]; then
             echo "macos runner detected"
-            wget -q https://dist.ballerina.io/downloads/${{ steps.configure-version.outputs.version }}/ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-macos-x64.pkg
+            if [[ ${{ inputs.version }} == 'nightly' ]]; then
+              ARTIFACT_NAME="MacOS Installer pkg"
+              GITHUB_RUN_ID=$(curl -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/ballerina-platform/ballerina-distribution/actions/workflows/$DAILY_BUILD_VERSION.yml/runs?status=success&per_page=1" | jq '.workflow_runs[0].id')
+              DOWNLOAD_URL=$(curl -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/ballerina-platform/ballerina-distribution/actions/runs/$GITHUB_RUN_ID/artifacts" | jq -r --arg name "$ARTIFACT_NAME" '.artifacts[] | select(.name == $name) | .archive_download_url')
+              curl -H "Authorization: token $GITHUB_TOKEN" \
+              -L -o artifact.zip $DOWNLOAD_URL
+              unzip -q artifact.zip 
+            else
+              wget -q https://dist.ballerina.io/downloads/${{ steps.configure-version.outputs.version }}/ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-macos-x64.pkg
+            fi
           else
             echo "ubuntu runner detected"
-            wget -q https://dist.ballerina.io/downloads/${{ steps.configure-version.outputs.version }}/ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-linux-x64.deb
-          fi 
+            if [[ ${{ inputs.version }} == 'nightly' ]]; then
+              ARTIFACT_NAME="Linux Installer deb"
+              GITHUB_RUN_ID=$(curl -H "Authorization: token $GITHUB_TOKEN" -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/ballerina-platform/ballerina-distribution/actions/workflows/$DAILY_BUILD_VERSION.yml/runs?status=success&per_page=1" | jq '.workflow_runs[0].id')
+              DOWNLOAD_URL=$(curl -H "Authorization: token $GITHUB_TOKEN" \
+              -H "Accept: application/vnd.github.v3+json" \
+              "https://api.github.com/repos/ballerina-platform/ballerina-distribution/actions/runs/$GITHUB_RUN_ID/artifacts" | jq -r --arg name "$ARTIFACT_NAME" '.artifacts[] | select(.name == $name) | .archive_download_url')
+              curl -H "Authorization: token $GITHUB_TOKEN" \
+              -L -o artifact.zip $DOWNLOAD_URL
+              unzip -q artifact.zip
+            else
+              wget -q https://dist.ballerina.io/downloads/${{ steps.configure-version.outputs.version }}/ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-linux-x64.deb
+            fi
+          fi
       shell: bash
 
     - name: Install Ballerina
