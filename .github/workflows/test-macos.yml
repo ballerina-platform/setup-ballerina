@@ -38,6 +38,6 @@ jobs:
       - uses: ballerina-platform/setup-ballerina@main
         name: Test the action.
         with:
-          version: nightly
+          version: nightly-2201.9.x
       - run: bal version
       - run: bal run hello.bal
