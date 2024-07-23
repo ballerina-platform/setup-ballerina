@@ -123,3 +123,12 @@ runs:
           echo "/usr/lib/ballerina/bin" >> $GITHUB_PATH
         fi
       shell: bash
+
+    - name: Remove downloaded files
+      run: |
+        set -x
+        rm -f ballerina-*-windows-x64.msi
+        rm -f ballerina-*-macos-x64.pkg
+        rm -f ballerina-*-linux-x64.deb
+        rm -f artifact.zip
+      shell: bash
