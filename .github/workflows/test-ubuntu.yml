@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       balVersion:
-        default: 2201.3.2
+        default: 2201.9.2
 jobs:
   test_linux:
     name: Test action on Ubuntu
@@ -19,7 +19,7 @@ jobs:
           if [[ -n "${{ github.event.inputs.balVersion }}" ]]; then
             echo ${{ github.event.inputs.balVersion }}
           else
-            echo 2201.3.2
+            echo 2201.9.2
           fi
           )" >> $GITHUB_ENV
       - uses: actions/checkout@v2
@@ -27,5 +27,17 @@ jobs:
         name: Test the action.
         with:
           version: ${{ env.balVersion }}
+      - run: bal version
+      - run: bal run hello.bal
+
+  test_linux_nightly:
+    name: Test action on Ubuntu (nightly)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+      - uses: ballerina-platform/setup-ballerina@main
+        name: Test the action.
+        with:
+          version: nightly-2201.9.x
       - run: bal version
       - run: bal run hello.bal
