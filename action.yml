@@ -7,7 +7,7 @@ inputs:
   version:
     description: "Ballerina Version"
     required: true
-    default: 2201.9.2
+    default: 2201.13.0
   github-token:
     description: 'GitHub token'
     default: ${{ github.token }}
