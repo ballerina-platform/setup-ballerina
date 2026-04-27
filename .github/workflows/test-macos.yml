@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       balVersion:
-        default: 2201.9.2
+        default: 2201.13.0
 jobs:
   test_macos:
     name: Test action on MacOS
@@ -38,6 +38,6 @@ jobs:
       - uses: ballerina-platform/setup-ballerina@main
         name: Test the action.
         with:
-          version: nightly-2201.9.x
+          version: nightly-2201.13.x
       - run: bal version
       - run: bal run hello.bal
