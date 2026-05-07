@@ -41,7 +41,7 @@ runs:
       run: |
         set -x
         GITHUB_TOKEN=${{ inputs.github-token }}
-        if [[ $OSTYPE == 'msys'* ]]; then
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
           echo "Windows runner detected"
           if [[ $BALLERINA_VERSION =~ ^nightly ]]; then
             DAILY_BUILD_VERSION=${BALLERINA_VERSION//nightly/daily-build}
@@ -58,7 +58,7 @@ runs:
           else
             curl -L -S -s https://dist.ballerina.io/downloads/${{ steps.configure-version.outputs.version }}/ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-windows-x64.msi --output ballerina-${{ inputs.version }}-swan-lake-windows-x64.msi
           fi
-        elif [[ $OSTYPE == 'darwin'* ]]; then
+        elif [[ "$RUNNER_OS" == "macOS" ]]; then
           echo "MacOS runner detected"
           if [[ $BALLERINA_VERSION =~ ^nightly ]]; then
             DAILY_BUILD_VERSION=${BALLERINA_VERSION//nightly/daily-build}
@@ -75,7 +75,7 @@ runs:
           else
             wget -q https://dist.ballerina.io/downloads/${{ steps.configure-version.outputs.version }}/ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-macos-x64.pkg
           fi
-        else
+        elif [[ "$RUNNER_OS" == "Linux" ]]; then
           echo "Ubuntu runner detected"
           if [[ $BALLERINA_VERSION =~ ^nightly ]]; then
             DAILY_BUILD_VERSION=${BALLERINA_VERSION//nightly/daily-build}
@@ -92,25 +92,28 @@ runs:
           else
             wget -q https://dist.ballerina.io/downloads/${{ steps.configure-version.outputs.version }}/ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-linux-x64.deb
           fi
+        else
+          echo "Unsupported runner OS: $RUNNER_OS"
+          exit 1
         fi
       shell: bash
 
     - name: Install Ballerina
       run: |
         set -x
-        if [[ $OSTYPE == 'msys'* ]]; then
+        if [[ "$RUNNER_OS" == "Windows" ]]; then
           echo "windows runner detected"
           INSTALLER_PATH=$(dir ballerina-*-windows-x64.msi)
           msiexec //i $INSTALLER_PATH //qn
           echo "BALLERINA_HOME=C:\\Program Files\\Ballerina\\" >> $GITHUB_ENV
           powershell ${GITHUB_ACTION_PATH}/updatepath.ps1
-        elif [[ $OSTYPE == 'darwin'* ]]; then
+        elif [[ "$RUNNER_OS" == "macOS" ]]; then
           echo "macos runner detected"
           INSTALLER_PATH=$(ls ./ballerina-*-macos-x64.pkg)
           sudo installer -pkg $INSTALLER_PATH -target /Library
           echo "BALLERINA_HOME=/Library/Ballerina" >> $GITHUB_ENV
           echo "/Library/Ballerina/bin" >> $GITHUB_PATH
-        else
+        elif [[ "$RUNNER_OS" == "Linux" ]]; then
           echo "ubuntu runner detected" 
           INSTALLER_PATH=$(ls ./ballerina-*-linux-x64.deb)
           if [ "$(id --user)" -eq "0" ]; then
@@ -121,6 +124,9 @@ runs:
           $sudocmd dpkg -i $INSTALLER_PATH
           echo "BALLERINA_HOME=/usr/lib/ballerina" >> $GITHUB_ENV
           echo "/usr/lib/ballerina/bin" >> $GITHUB_PATH
+        else
+          echo "Unsupported runner OS: $RUNNER_OS"
+          exit 1
         fi
       shell: bash
 
