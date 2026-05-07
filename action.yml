@@ -24,7 +24,7 @@ runs:
         else
           BALLERINA_VERSION=${{ inputs.version }}
         fi
-        echo "::set-output name=version::$BALLERINA_VERSION"
+        echo "version=$BALLERINA_VERSION" >> $GITHUB_OUTPUT
         echo BALLERINA_VERSION=$BALLERINA_VERSION >> $GITHUB_ENV
       shell: bash
 
