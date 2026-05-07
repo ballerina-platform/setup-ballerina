@@ -75,7 +75,7 @@ runs:
           else
             wget -q https://dist.ballerina.io/downloads/${{ steps.configure-version.outputs.version }}/ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-macos-x64.pkg
           fi
-        elif [[ "$RUNNER_OS" == "Linux" ]]; then
+        else
           echo "Ubuntu runner detected"
           if [[ $BALLERINA_VERSION =~ ^nightly ]]; then
             DAILY_BUILD_VERSION=${BALLERINA_VERSION//nightly/daily-build}
@@ -92,9 +92,6 @@ runs:
           else
             wget -q https://dist.ballerina.io/downloads/${{ steps.configure-version.outputs.version }}/ballerina-${{ steps.configure-version.outputs.version }}-swan-lake-linux-x64.deb
           fi
-        else
-          echo "Unsupported runner OS: $RUNNER_OS"
-          exit 1
         fi
       shell: bash
 
@@ -113,13 +110,8 @@ runs:
           sudo installer -pkg $INSTALLER_PATH -target /Library
           echo "BALLERINA_HOME=/Library/Ballerina" >> $GITHUB_ENV
           echo "/Library/Ballerina/bin" >> $GITHUB_PATH
-        elif [[ "$RUNNER_OS" == "Linux" ]]; then
-          echo "ubuntu runner detected"
-          if ! command -v dpkg >/dev/null 2>&1; then
-            echo "Linux installation currently requires a Debian/Ubuntu runner with dpkg."
-            echo "Use ubuntu-latest or install Ballerina before invoking this action."
-            exit 1
-          fi
+        else
+          echo "ubuntu runner detected" 
           INSTALLER_PATH=$(ls ./ballerina-*-linux-x64.deb)
           if [ "$(id --user)" -eq "0" ]; then
             sudocmd=""
@@ -129,9 +121,6 @@ runs:
           $sudocmd dpkg -i $INSTALLER_PATH
           echo "BALLERINA_HOME=/usr/lib/ballerina" >> $GITHUB_ENV
           echo "/usr/lib/ballerina/bin" >> $GITHUB_PATH
-        else
-          echo "Unsupported runner OS: $RUNNER_OS"
-          exit 1
         fi
       shell: bash
 
