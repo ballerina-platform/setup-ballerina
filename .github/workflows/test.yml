@@ -1,7 +1,16 @@
-name: Pull Request
+name: Test
 
 on:
+  push:
+    branches:
+      - main
   pull_request:
+  workflow_dispatch:
+    inputs:
+      balVersion:
+        default: 2201.13.3
+  schedule:
+    - cron: '0 21 * * *'
 
 jobs:
   test:
@@ -23,23 +32,24 @@ jobs:
             os: macos-latest
             variant: stable
             balVersion: 2201.13.3
-          - name: MacOS
-            os: macos-latest
-            variant: nightly
-            balVersion: nightly-2201.13.x
+          # TODO: Uncomment MacOS and Windows nightly builds once https://github.com/ballerina-platform/ballerina-distribution/issues/6377 is resolved.
+          # - name: MacOS
+          #   os: macos-latest
+          #   variant: nightly
+          #   balVersion: nightly-2201.13.x
           - name: Windows
             os: windows-latest
             variant: stable
             balVersion: 2201.13.3
-          - name: Windows
-            os: windows-latest
-            variant: nightly
-            balVersion: nightly-2201.13.x
+          # - name: Windows
+          #   os: windows-latest
+          #   variant: nightly
+          #   balVersion: nightly-2201.13.x
     steps:
       - uses: actions/checkout@v2
       - uses: ./
         name: Test the action.
         with:
-          version: ${{ matrix.balVersion }}
+          version: ${{ matrix.variant == 'stable' && inputs.balVersion || matrix.balVersion }}
       - run: bal version
       - run: bal run hello.bal
