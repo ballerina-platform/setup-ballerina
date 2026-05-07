@@ -7,7 +7,7 @@ on:
   workflow_dispatch:
     inputs:
       balVersion:
-        default: 2201.9.2
+        default: 2201.13.3
 jobs:
   test_windows:
     name: Test action on Windows
@@ -19,7 +19,7 @@ jobs:
           if [[ -n "${{ github.event.inputs.balVersion }}" ]]; then
             echo ${{ github.event.inputs.balVersion }}
           else
-            echo 2201.9.2
+            echo 2201.13.3
           fi
           )" >> $GITHUB_ENV
         shell: bash
@@ -39,6 +39,6 @@ jobs:
       - uses: ballerina-platform/setup-ballerina@main
         name: Test the action.
         with:
-          version: nightly-2201.9.x
+          version: nightly-2201.13.x
       - run: bal version
       - run: bal run hello.bal
