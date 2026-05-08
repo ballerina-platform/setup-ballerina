@@ -11,7 +11,7 @@ GitHub Action for installing [Ballerina](https://ballerina.io) and making the `b
 | Input | Description | Required |
 |---|---|---:|
 | `version` | Ballerina Swan Lake version to install. Use a fixed version such as `2201.13.3`, or `latest`. Nightly versions are supported with values that start with `nightly`. | Yes |
-| `github-token` | GitHub token used when downloading GitHub Actions artifacts, such as nightly builds. | No |
+| `github-token` | GitHub token used only when downloading GitHub Actions artifacts for nightly builds. | No |
 
 ## Usage
 
