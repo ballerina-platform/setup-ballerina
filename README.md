@@ -1,73 +1,55 @@
-[![Test Ubuntu](https://github.com/ballerina-platform/setup-ballerina/actions/workflows/test-ubuntu.yml/badge.svg?branch=main)](https://github.com/ballerina-platform/setup-ballerina/actions/workflows/test-ubuntu.yml)
-[![Test Windows](https://github.com/ballerina-platform/setup-ballerina/actions/workflows/test-windows.yml/badge.svg?branch=main)](https://github.com/ballerina-platform/setup-ballerina/actions/workflows/test-windows.yml)
-[![Test Action](https://github.com/ballerina-platform/setup-ballerina/actions/workflows/test-macos.yml/badge.svg?branch=main)](https://github.com/ballerina-platform/setup-ballerina/actions/workflows/test-macos.yml)
+[![Test](https://github.com/ballerina-platform/setup-ballerina/actions/workflows/test.yml/badge.svg?branch=main)](https://github.com/ballerina-platform/setup-ballerina/actions/workflows/test.yml)
 [![GitHub license](https://img.shields.io/github/license/ballerina-platform/setup-ballerina)](https://github.com/ballerina-platform/setup-ballerina/blob/main/LICENSE)
 [![GitHub issues](https://img.shields.io/github/issues/ballerina-platform/setup-ballerina)](https://github.com/ballerina-platform/setup-ballerina/issues)
 
 # Setup Ballerina
 
-This Github action installs [Ballerina](https://ballerina.io)'s build system and package manager command; the `bal` command.
+GitHub Action for installing [Ballerina](https://ballerina.io) and making the `bal` command available in GitHub Actions workflows. The action sets `BALLERINA_HOME` and updates `PATH` for the configured runner.
 
 ## Inputs
 
-|Input| Description|Required|
-|---|---|---|
-|_version_|Ballerina SwanLake Version|yes|
+| Input | Description | Required |
+|---|---|---:|
+| `version` | Ballerina Swan Lake version to install. Use a fixed version such as `2201.13.3`, or `latest`. Nightly versions are supported with values that start with `nightly`. | Yes |
+| `github-token` | GitHub token used only when downloading GitHub Actions artifacts for nightly builds. | No |
 
 ## Usage
 
-_**Note**: This action is supported on all operating systems (`ubuntu`, `macos`, `windows`)_
-
-### Ubuntu
-
 ```yaml
+jobs:
+  build:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v2
-      - uses: ballerina-platform/setup-ballerina@v1
-        name: Install Ballerina
+      - uses: actions/checkout@v4
+      - name: Set Up Ballerina
+        uses: ballerina-platform/setup-ballerina@v1.1.4
         with:
-          version: 2201.3.2
-      - run: bal version
-      - run: bal run hello.bal
+          version: 2201.13.3
+      - run: bal run
 ```
 
-[![Test Ubuntu](https://github.com/ballerina-platform/setup-ballerina/actions/workflows/test-ubuntu.yml/badge.svg?branch=main)](https://github.com/ballerina-platform/setup-ballerina/actions/workflows/test-ubuntu.yml)
-[![Source](https://img.shields.io/badge/-Source-blue)](https://github.com/ballerina-platform/setup-ballerina/blob/main/.github/workflows/test-ubuntu.yml)
+## Supported Runners
 
-### MacOs
+This action runs on:
 
-```yaml
-    runs-on: macos-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ballerina-platform/setup-ballerina@v1
-        name: Install Ballerina
-        with:
-          version: 2201.3.2
-      - run: bal version
-      - run: bal run hello.bal
-```
+- Ubuntu
+- macOS
+- Windows
 
-[![Test Action](https://github.com/ballerina-platform/setup-ballerina/actions/workflows/test-macos.yml/badge.svg?branch=main)](https://github.com/ballerina-platform/setup-ballerina/actions/workflows/test-macos.yml)
-[![Source](https://img.shields.io/badge/-Source-blue)](https://github.com/ballerina-platform/setup-ballerina/blob/main/.github/workflows/test-macos.yml)
+## Troubleshooting
 
-### Windows
+### `bal` command not found
 
-```yaml
-    runs-on: windows-latest
-    steps:
-      - uses: actions/checkout@v2
-      - uses: ballerina-platform/setup-ballerina@v1
-        name: Install Ballerina
-        with:
-          version: 2201.3.2
-      - run: bal version
-      - run: bal run hello.bal
-```
+Check that the setup step completed successfully before running `bal` commands. The setup step must run before any step that calls `bal`.
 
-[![Test Windows](https://github.com/ballerina-platform/setup-ballerina/actions/workflows/test-windows.yml/badge.svg?branch=main)](https://github.com/ballerina-platform/setup-ballerina/actions/workflows/test-windows.yml)
-[![Source](https://img.shields.io/badge/-Source-blue)](https://github.com/ballerina-platform/setup-ballerina/blob/main/.github/workflows/test-windows.yml)
+### Version download failed
+
+Check that the configured `version` exists in the [Ballerina Swan Lake archived versions](https://ballerina.io/downloads/archived/#swan-lake-archived-versions). Invalid or unavailable versions cannot be downloaded from `dist.ballerina.io`.
+
+### Nightly download failed
+
+Nightly versions are downloaded from GitHub Actions artifacts in `ballerina-platform/ballerina-distribution` and may require a valid `github-token`.
 
 ## License
-The scripts and documentation in this project are released under the [Apache License](https://github.com/ballerina-platform/setup-ballerina/blob/main/LICENSE).
+
+This project is licensed under the Apache License 2.0. See [LICENSE](LICENSE).
