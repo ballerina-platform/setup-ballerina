@@ -27,23 +27,34 @@ jobs:
           - name: Ubuntu
             os: ubuntu-latest
             variant: nightly
-            balVersion: nightly-2201.13.x
+            balVersion: nightly
+          # - name: Ubuntu
+          #   os: ubuntu-latest
+          #   variant: nightly-2201.13.x
+          #   balVersion: nightly-2201.13.x
           - name: MacOS
             os: macos-latest
             variant: stable
             balVersion: 2201.13.3
-          # TODO: Uncomment MacOS and Windows nightly builds once https://github.com/ballerina-platform/ballerina-distribution/issues/6377 is resolved.
+          - name: MacOS
+            os: macos-latest
+            variant: nightly
+            balVersion: nightly
           # - name: MacOS
           #   os: macos-latest
-          #   variant: nightly
+          #   variant: nightly-2201.13.x
           #   balVersion: nightly-2201.13.x
           - name: Windows
             os: windows-latest
             variant: stable
             balVersion: 2201.13.3
+          - name: Windows
+            os: windows-latest
+            variant: nightly
+            balVersion: nightly
           # - name: Windows
           #   os: windows-latest
-          #   variant: nightly
+          #   variant: nightly-2201.13.x
           #   balVersion: nightly-2201.13.x
     steps:
       - uses: actions/checkout@v6
